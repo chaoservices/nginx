@@ -1,0 +1,23 @@
+server {
+    listen       80;
+    server_name  chaos.services;
+    root /srv/www;
+
+
+    location / {
+        index  index.html index.htm index.php;
+    }
+    # Handle php requests
+    location ~ \.php$ {
+        include /etc/nginx/fastcgi_params;
+        fastcgi_pass  127.0.0.1:9000;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+    # Disable static content logging and set cache time to max
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+        expires max;
+        log_not_found off;
+    }
+}
+
